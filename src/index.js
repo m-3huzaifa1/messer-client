@@ -3,11 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'font-awesome/css/font-awesome.min.css'
+import { Provider } from 'react-redux';
+//import { createStore } from 'redux';
+//import rootReducers from './redux/store/combineReducers';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+//const store = createStore(rootReducers)
 root.render(
   <React.StrictMode>
     <App />
+  
   </React.StrictMode>
 );
 
