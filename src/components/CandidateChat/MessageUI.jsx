@@ -44,10 +44,10 @@ export default function MessageUI() {
       <div className="">
     <div className="row justify-content-between align-items-center">
               <div className="col-3">
-               Hello {auth?.foundUser?.name} 
+              <h1 style={{color:'green'}}>Hello {auth?.foundUser?.name}!</h1>
               </div>
               <div className="col-4">
-                <h1><Link to='/message' style={{textDecoration:'none'}}>Messer Chat</Link></h1>
+                <h1><Link to='/message' style={{textDecoration:'none'}}>ChatMess!</Link></h1>
               </div>
               <div className="col-3">
               <button className="btn btn-success btn-sm">

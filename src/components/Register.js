@@ -76,13 +76,21 @@ export default function Register() {
     }
     const checkSubmit = username && email && password
     return(
-    <div style={{paddingTop:'70px',paddingBottom:'300px',backgroundImage:`url(${img})`,
+    <div className="row" 
+    style={{
+    backgroundColor:'aliceblue',
+    paddingTop:'70px',
+    paddingBottom:'100px',
+    //backgroundImage:`url(${img})`,
     //backgroundRepeat:'no-repeat',
-    backgroundSize:'100%'}}>
-        <h1>Messer Chat</h1>
+    //backgroundSize:'100%'
+    }}>
+      <div className="col-6 offset-3 p-4" style={{background: "linear-gradient(to bottom, rgba(0, 47, 75, 0.8) 0%, rgba(220, 66, 37, 0.8))"}}>
+        <h1>ChatMess !</h1>
         <br/>
         <h3>Register</h3>
         <br/>
+
         <div className='row' >
                   
             <div className='col-12 d-flex justify-content-center' >
@@ -90,7 +98,7 @@ export default function Register() {
                 <form>
     <div className="form-group">
     <label htmlFor="exampleInputusername1" className="form-label">Username</label>
-    <input type="text" className="form-control" 
+    <input type="text" className="form-control" style={{border:'1px solid black'}}
     onChange={(e)=>{setUsername(e.target.value)}} 
     value={username}
     id="exampleInputUsername1"  placeholder="Enter username"/>
@@ -98,7 +106,7 @@ export default function Register() {
   </div>
   <div className="form-group">
     <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-    <input type="email" className="form-control" 
+    <input type="email" className="form-control" style={{border:'1px solid black'}}
     onChange={(e)=>{setEmail(e.target.value)}} 
     value={email}
     id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
@@ -106,7 +114,7 @@ export default function Register() {
   </div>
   <div className="form-group">
     <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-    <input type="password" className="form-control"
+    <input type="password" className="form-control" style={{border:'1px solid black'}}
     value={password}
     onChange={(e)=>{setPassword(e.target.value)}} id="exampleInputPassword1" placeholder="Password"/>
   </div>
@@ -117,7 +125,8 @@ export default function Register() {
             </div>    
         </div>
         <br/>
-        <h6>Already Registered ? <Link to='/login'>Login</Link></h6>
+        <h6>Already Registered ? <Link to='/login' style={{textDecoration:'none',color:'blue',fontSize:'20px'}}>Login</Link></h6>
+    </div>
     </div>
     )
 }

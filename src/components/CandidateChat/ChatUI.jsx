@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import useAuth from "../../Hooks/auth/useAuth";
 import useLogout from "../../Hooks/useLogout";
+import CryptoJS from "crypto-js";
+
 import {
   MDBContainer,
   MDBRow,
@@ -36,7 +38,9 @@ export default function MessageUI({conversation}) {
   const [newMessageFlag, setNewMessageFlag] = useState(false);
   const scrollRef = useRef();
   const [search,setSearch] = useState('')
-
+  const [encryptedData,setEncryptedData] = useState("")
+  const [DecryptedData,setDecryptedData] = useState("")
+  
   /*const dispatchProcess = (encrypt, msg, cipher) => {
     dispatch(process(encrypt, msg, cipher))
   }*/
@@ -153,16 +157,21 @@ export default function MessageUI({conversation}) {
 
   }
 */
+  
+  const secretPass = "XkhZG41M2t3H"
   const sendText = async (e) => {
     //   console.log(value);
     if (!value) return;
+
+    const encdata = CryptoJS.AES.encrypt(JSON.stringify(value),secretPass).toString()
+    console.log(encdata)
     try {
       if (true) {
         let message = {};
           message = {
             senderId: senderId,
             receiverId: recieverId,
-            text: value,
+            text: encdata,
           };
         
         console.log(message)
@@ -208,11 +217,11 @@ export default function MessageUI({conversation}) {
       <div className="" >
     <div className="row justify-content-between align-items-center">
               <div className="col-3">
-               <h1 style={{color:'green'}}>Hello {auth?.foundUser?.name} !</h1>
+               <h1 style={{color:'green'}}>Hello {auth?.foundUser?.name}!</h1>
                
               </div>
               <div className="col-4">
-                <h1><Link to='/message' style={{textDecoration:'none'}}>Messer Chat</Link></h1>
+                <h1><Link to='/message' style={{textDecoration:'none'}}> ChatMess!</Link></h1>
               </div>
               <div className="col-3">
                 <button className="btn btn-success btn-sm">
@@ -301,6 +310,8 @@ export default function MessageUI({conversation}) {
           end-to-end encryption
             <div className="msgarea" style={{overflowY:'scroll',height:'300px',marginTop:'25px',padding:'5px',border:'1px solid blue ',borderRadius:'5px',backgroundColor:'rgb(250,250,250)' }}>
             {messages?.map((item)=>{
+              const bytes = JSON.parse((CryptoJS.AES.decrypt((item?.text),secretPass)).toString(CryptoJS.enc.Utf8))
+              //console.log(item?.text,bytes)
             return(
                 item.senderId != senderId ? (
                     <li className="d-flex justify-content-between mb-3 mt-3" ref={scrollRef}>
@@ -342,7 +353,7 @@ export default function MessageUI({conversation}) {
                       </MDBCardHeader>
                       <MDBCardBody>
                         <p className="mb-0" style={{float:'left'}}>
-                        {item?.text}
+                        {bytes}
                         </p>
                       </MDBCardBody>
                     </MDBCard>
@@ -389,7 +400,7 @@ export default function MessageUI({conversation}) {
                       <MDBCardBody>
                         
                       <p className="mb-0" style={{float:'left'}}>
-                        {item?.text}
+                        {bytes}
                         </p>
                       </MDBCardBody>
                     </MDBCard>
