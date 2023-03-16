@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const BASE_URL = 'http://localhost:8080';
+export const BASE_URL = 'https://chatmess.onrender.com';
 
 
 export default axios.create({
