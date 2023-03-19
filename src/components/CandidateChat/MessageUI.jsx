@@ -114,9 +114,8 @@ export default function MessageUI() {
 
                         {user?.name[0].toUpperCase()}
                         </div>
-                        <div className="pt-1">
+                        <div className="pt-3">
                           <p className="fw-bold mb-0">{user?.name}</p>
-                          <p style={{fontSize:'15px'}}>{user?.email}</p>
                           
                         </div>
                       </div>
@@ -124,6 +123,11 @@ export default function MessageUI() {
                         <p className="small text-muted mb-1"></p>
                       </div>
                     </a>
+                    <div className="d-flex flex-row">
+                    <a style={{textDecoration:'none'}} href={`/chat/${user?._id}`} className="d-flex justify-content-between">
+                      <p style={{fontSize:'15px',color:'green'}}>{user?.email}</p>
+                      </a>
+                      </div>
                   </li>    
                   )
                 })}

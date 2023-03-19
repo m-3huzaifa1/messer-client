@@ -40,7 +40,7 @@ export default function MessageUI({conversation}) {
   const [search,setSearch] = useState('')
   const [encryptedData,setEncryptedData] = useState("")
   const [DecryptedData,setDecryptedData] = useState("")
-  
+  const [loadMess,setLoadMess] = useState([])
   /*const dispatchProcess = (encrypt, msg, cipher) => {
     dispatch(process(encrypt, msg, cipher))
   }*/
@@ -121,15 +121,16 @@ export default function MessageUI({conversation}) {
     if (incomingMessage && incomingMessage.senderId == recieverId) {
       console.log("yesss setting message");
       setMessages((prev) => [...prev, incomingMessage]);
+      //setMessages( incomingMessage);
     }
-    // setNewMessageFlag((prev) => !prev);
+     //setNewMessageFlag((prev) => !prev);
   }, [incomingMessage]);
 
   //  recieving message
 
   useEffect(() => {
     const getMessage = async () => {
-      // if(incomingMessage){
+       //if(incomingMessage){
       console.log("candidate ", auth);
       const data = {
         senderId: senderId,
@@ -147,11 +148,22 @@ export default function MessageUI({conversation}) {
       );
       console.log(response?.data)
       setMessages(response?.data?.message);
-      // }}
+       
+      //}}
     };
     getMessage();
+    /*setLoadMess(messages?(messages.map((item)=>{
+      
+      const decryptmess = CryptoJS.AES.decrypt(item?.text,secretPass)
+      const mess = JSON.parse(decryptmess.toString(CryptoJS.enc.Utf8))
+      console.log(mess)
+      item.text = mess
+      console.log(item.text)
+      return item
+    })): null)
+    console.log(loadMess)*/
   }, [recieverId, senderId,newMessageFlag]);
-
+  console.log(loadMess)
 
   /*const deleteText = async() => {
 
@@ -200,8 +212,10 @@ export default function MessageUI({conversation}) {
         );
         
         console.log(response);
+        setMessages(response?.data?.message);
         
         setValue("");
+        //setNewMessageFlag((prev) => !prev)
         setNewMessageFlag(!newMessageFlag);
       }
     } catch (err) {
@@ -209,18 +223,24 @@ export default function MessageUI({conversation}) {
     }
   };
 
-
-
+  
+  /* messages? setLoadMess(messages.map((item)=>{
+    const decryptmess = CryptoJS.AES.decrypt(item?.text,secretPass)
+    const mess = JSON.parse(decryptmess.toString(CryptoJS.enc.Utf8))
+    return mess
+  })): setLoadMess(null)*/
+  
+  console.log(loadMess)
 
   return (
-    <React.Fragment>
-      <div className="" >
-    <div className="row justify-content-between align-items-center">
-              <div className="col-3">
+  
+      <div >
+      <div className="row justify-content-between align-items-center">
+              <div className="col-4">
                <h1 style={{color:'green'}}>Hello {auth?.foundUser?.name}!</h1>
                
               </div>
-              <div className="col-4">
+              <div className="col-5">
                 <h1><Link to='/message' style={{textDecoration:'none'}}> ChatMess!</Link></h1>
               </div>
               <div className="col-3">
@@ -234,9 +254,9 @@ export default function MessageUI({conversation}) {
                 </a>
                 </button>
               </div>
-              </div>    
-        </div>
-    <MDBContainer fluid className="py-4" style={{ backgroundColor: "#eee" }}>
+      </div>    
+      
+    <MDBContainer fluid className="py-4" style={{ backgroundColor: "#eee"}}>
       
       <MDBRow>
         <MDBCol md="6" lg="5" xl="4" className="mb-4 mb-md-0">
@@ -260,7 +280,7 @@ export default function MessageUI({conversation}) {
                     className="p-2 mb-3"
                     style={{ backgroundColor: (user?.email === userP?.email)? "#eee":'white',border:'1px solid green ',borderRadius:'5px'}}
                     >
-                    <a href={`/chat/${user?._id}`} className="d-flex justify-content-between">
+                    <a style={{textDecoration:'none'}} href={`/chat/${user?._id}`} className="d-flex justify-content-between">
                       <div className="d-flex flex-row">
                         {/*<img
                           src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-1.webp"
@@ -287,14 +307,20 @@ export default function MessageUI({conversation}) {
 
                         {user?.name[0].toUpperCase()}
                         </div>
-                        <div className="pt-1">
+                        <div className="pt-3">
                           <p className="fw-bold mb-0">{user?.name}</p>
-                          <p style={{fontSize:'15px'}}>{user?.email}</p>
+                          
                         </div>
                       </div>
                       <div className="pt-1">
                       </div>
+                      
                     </a>
+                    <div className="d-flex flex-row">
+                    <a style={{textDecoration:'none'}} href={`/chat/${user?._id}`} className="d-flex justify-content-between">
+                      <p style={{fontSize:'15px',color:'green'}}>{user?.email}</p>
+                      </a>
+                      </div>
                   </li>    
                   )
                 })}
@@ -309,8 +335,11 @@ export default function MessageUI({conversation}) {
           <MDBTypography listUnStyled>
           end-to-end encryption
             <div className="msgarea" style={{overflowY:'scroll',height:'300px',marginTop:'25px',padding:'5px',border:'1px solid blue ',borderRadius:'5px',backgroundColor:'rgb(250,250,250)' }}>
-            {messages?.map((item)=>{
-              const bytes = JSON.parse((CryptoJS.AES.decrypt((item?.text),secretPass)).toString(CryptoJS.enc.Utf8))
+            { messages? (messages.map((item)=>{
+              const byte = CryptoJS.AES.decrypt(item?.text,secretPass).toString(CryptoJS.enc.Utf8)
+              const bytes = byte.replace(/"/g,"")
+              console.log(bytes.replace(/"/g,"")); 
+              //const bytes = JSON.parse(byte)
               //console.log(item?.text,bytes)
             return(
                 item.senderId != senderId ? (
@@ -409,7 +438,7 @@ export default function MessageUI({conversation}) {
                           
                 )
             )
-            })}
+            })):"Start Coversation"}
             
             </div>
             <li className="bg-white mb-3 mt-3">
@@ -419,7 +448,7 @@ export default function MessageUI({conversation}) {
                  
             />
             </li>
-            <button className="btn btn-large btn-primary" 
+            <button className="btn btn-large btn-primary"  
             onClick={()=>sendText()}>
                 Send
             </button>
@@ -429,6 +458,7 @@ export default function MessageUI({conversation}) {
         </MDBCol>
       </MDBRow>
     </MDBContainer>
-    </React.Fragment>
+    </div>
+  
   );
 }

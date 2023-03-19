@@ -126,11 +126,12 @@ style={{
   paddingTop:'100px',
   backgroundColor:'aliceblue',
   paddingBottom:'100px',
+  background: "linear-gradient(to bottom, rgba(0, 47, 75, 0.8) 0%, rgba(220, 66, 37, 0.8))"
   //backgroundImage:`url(${img})`,
   //backgroundRepeat:'no-repeat',
   //backgroundSize:'100%'
   }}>
-    <div className="col-6 offset-3 p-4" style={{background: "linear-gradient(to bottom, rgba(0, 47, 75, 0.8) 0%, rgba(220, 66, 37, 0.8))"}}
+    <div className="col-6 offset-3 p-4" //style={{}}
         >
 
         <h1>ChatMess !</h1>
